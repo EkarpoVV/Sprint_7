@@ -20,9 +20,9 @@ class CourierMethods:
         attachment_type=allure.attachment_type.JSON
         )
         try:
-            return response.json(), response.status_code
+            return response.json(), response.status_code, params
         except json.decoder.JSONDecodeError:
-            return response.text, response.status_code
+            return response.text, response.status_code, params
                 
     @allure.step("Залогиниться курьером")
     def login_courier(self, params = None):
