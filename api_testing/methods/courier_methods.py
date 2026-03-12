@@ -14,6 +14,11 @@ class CourierMethods:
             #params = CourierMethods.random_data_for_register_new_courier()
         response = requests.post(
             f"{BASE_URL}{COURIERS_URL}", data=params)
+        allure.attach(
+        response.text,
+        name="Response",
+        attachment_type=allure.attachment_type.JSON
+        )
         try:
             return response.json(), response.status_code
         except json.decoder.JSONDecodeError:

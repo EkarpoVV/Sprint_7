@@ -1,6 +1,5 @@
 from utils.generators import Generatorss
 from api_testing.methods.courier_methods import *
-import requests
 import pytest
 from data import * 
 import allure
@@ -44,14 +43,17 @@ class TestCreateCurier:
         "password": Generatorss.generate_random_string(10),
         "first_name": Generatorss.generate_random_string(10)
         }
-        response = requests.post("https://qa-scooter.praktikum-services.ru/api/v1/courier", data=payload)
-        assert response.status_code == 201
+        curier_data, status_code  =  CourierMethods.create_courier(self, payload)
+        assert (status_code == 201) ,(
+            f"curier_data:{curier_data} and status_code: {status_code} "
+        )
 
-    @allure.title('Успешный запрос возвращает {"ok":true}')
+    @allure.title("Успешный запрос возвращает {'ok':}")
     def test_create_curier_ok_true(self):
         courier_data, status_code = CourierMethods.create_courier(self)
-        assert courier_data["ok"] is True
-    
+        assert  (courier_data["ok"] and status_code == 201),(
+            f"courier_data:{courier_data} and status_code: {status_code}"
+        )
 
     @allure.title("Если создать пользователя с логином, который уже есть, возвращается ошибка.")
     def test_create_curier_same_login(self):
